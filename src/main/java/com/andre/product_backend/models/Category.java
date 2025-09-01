@@ -1,7 +1,16 @@
 package com.andre.product_backend.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "TBL_CATEGORY")
 public class Category {
+
+    @Id
     private int id;
+    
     private String name;
     
     public Category(int id, String name) {
