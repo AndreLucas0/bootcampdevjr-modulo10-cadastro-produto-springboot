@@ -3,6 +3,7 @@ package com.andre.product_backend.resources;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,30 +13,34 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.andre.product_backend.models.Category;
+import com.andre.product_backend.repository.CategoryRepository;
 
 @RestController
 @CrossOrigin
 public class CategoryController {
 
-    private List<Category> categories = Arrays.asList(new Category(1, "Produção própria"),
-                                                      new Category(2, "Nacional"),
-                                                      new Category(3, "Importado"),
-                                                      new Category(4, "Premium"));
+    // private List<Category> categories = Arrays.asList(new Category(1, "Produção própria"),
+    //                                                   new Category(2, "Nacional"),
+    //                                                   new Category(3, "Importado"),
+    //                                                   new Category(4, "Premium"));
+
+    @Autowired
+    private CategoryRepository categoryRepository;
     
 
-    @GetMapping("categories/{id}")
-    public ResponseEntity<Category> getCategory(@PathVariable int id) {
+    // @GetMapping("categories/{id}")
+    // public ResponseEntity<Category> getCategory(@PathVariable int id) {
         
-        Category cat = categories.stream()
-                                 .filter(c -> c.getId() == id)
-                                 .findFirst()
-                                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found."));
+    //     Category cat = categories.stream()
+    //                              .filter(c -> c.getId() == id)
+    //                              .findFirst()
+    //                              .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found."));
 
-        return ResponseEntity.ok(cat);
-    }
+    //     return ResponseEntity.ok(cat);
+    // }
 
     @GetMapping("categories")
     public List<Category> getCategories() {
-        return categories;
+        return categoryRepository.findAll();
     }
 }
