@@ -19,28 +19,21 @@ import com.andre.product_backend.repository.CategoryRepository;
 @CrossOrigin
 public class CategoryController {
 
-    // private List<Category> categories = Arrays.asList(new Category(1, "Produção própria"),
-    //                                                   new Category(2, "Nacional"),
-    //                                                   new Category(3, "Importado"),
-    //                                                   new Category(4, "Premium"));
-
     @Autowired
     private CategoryRepository categoryRepository;
     
 
-    // @GetMapping("categories/{id}")
-    // public ResponseEntity<Category> getCategory(@PathVariable int id) {
+    @GetMapping("categories/{id}")
+    public ResponseEntity<Category> getCategory(@PathVariable int id) {
         
-    //     Category cat = categories.stream()
-    //                              .filter(c -> c.getId() == id)
-    //                              .findFirst()
-    //                              .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found."));
+        Category category = categoryRepository.findById(id)
+                                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found."));
 
-    //     return ResponseEntity.ok(cat);
-    // }
+        return ResponseEntity.ok(category);
+    }
 
     @GetMapping("categories")
-    public List<Category> getCategories() {
+    public List<Category> getCategories() { 
         return categoryRepository.findAll();
     }
 }
