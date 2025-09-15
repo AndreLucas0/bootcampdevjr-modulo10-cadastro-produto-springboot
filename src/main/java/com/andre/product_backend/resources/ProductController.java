@@ -1,23 +1,22 @@
 package com.andre.product_backend.resources;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.andre.product_backend.models.Product;
-import com.andre.product_backend.repository.ProductRepository;
+import com.andre.product_backend.service.ProductService;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -25,13 +24,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @GetMapping("products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id) {
 
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
+        Product product = productService.getById(id);
 
         return ResponseEntity.ok(product);
     }
@@ -39,7 +37,7 @@ public class ProductController {
     @PostMapping("products")
     public ResponseEntity<Product> save(@RequestBody Product product) {
         
-        product = productRepository.save(product);
+        product = productService.save(product);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -52,6 +50,18 @@ public class ProductController {
 
     @GetMapping("products")
     public List<Product> getProducts() {
-        return productRepository.findAll();
+        return productService.getAll();
+    }
+
+    @DeleteMapping("products/{id}")
+    public ResponseEntity<Void> removeProduct(@PathVariable int id) {
+        productService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("products/{id}")
+    public ResponseEntity<Void> updateProduct(@PathVariable int id, @RequestBody Product productUpdate) {
+        productService.update(id, productUpdate);
+        return ResponseEntity.ok().build();
     }
 }
