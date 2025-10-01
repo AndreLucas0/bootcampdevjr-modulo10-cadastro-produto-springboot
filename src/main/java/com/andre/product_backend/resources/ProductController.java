@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,24 +19,26 @@ import com.andre.product_backend.service.ProductService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @CrossOrigin
+@RequestMapping("products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("products/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable long id) {
 
         Product product = productService.getById(id);
 
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping("products")
-    public ResponseEntity<Product> save(@RequestBody Product product) {
+    @PostMapping
+    public ResponseEntity<Product> save(@Validated @RequestBody Product product) {
         
         product = productService.save(product);
 
@@ -48,19 +51,19 @@ public class ProductController {
         return ResponseEntity.created(location).body(product);
     }
 
-    @GetMapping("products")
-    public List<Product> getProducts() {
-        return productService.getAll();
+    @GetMapping
+    public ResponseEntity<List<Product>> getProducts() {
+        return ResponseEntity.ok(productService.getAll());
     }
 
-    @DeleteMapping("products/{id}")
-    public ResponseEntity<Void> removeProduct(@PathVariable int id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeProduct(@PathVariable long id) {
         productService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("products/{id}")
-    public ResponseEntity<Void> updateProduct(@PathVariable int id, @RequestBody Product productUpdate) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProduct(@PathVariable long id, @RequestBody Product productUpdate) {
         productService.update(id, productUpdate);
         return ResponseEntity.ok().build();
     }

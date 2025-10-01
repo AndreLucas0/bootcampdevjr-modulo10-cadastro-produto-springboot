@@ -25,4 +25,20 @@ public class CategoryService {
     public List<Category> getAll() {
         return categoryRepository.findAll();
     }
+
+    public Category save(Category category) {
+        Category categorySaved = categoryRepository.save(category);
+        return categorySaved;
+    }
+
+    public void deleteById(int id) {
+        Category category = this.getById(id);
+        categoryRepository.delete(category);
+    }
+
+    public void update(int id, Category categoryUpdate) {
+        Category category = this.getById(id);
+        category.setName(categoryUpdate.getName());
+        categoryRepository.save(category);
+    }
 }
