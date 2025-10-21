@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.andre.dto.ProductRequest;
+import com.andre.dto.ProductResponse;
 import com.andre.product_backend.models.Product;
 import com.andre.product_backend.service.ProductService;
 
@@ -38,9 +40,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@Validated @RequestBody Product product) {
+    public ResponseEntity<Product> save(@Validated @RequestBody ProductRequest productRequest) {
         
-        product = productService.save(product);
+        ProductResponse product = productService.save(productRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

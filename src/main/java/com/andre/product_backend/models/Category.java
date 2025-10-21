@@ -2,14 +2,14 @@ package com.andre.product_backend.models;
 
 import java.io.Serializable;
 
+import com.andre.dto.CategoryResponse;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "TBL_CATEGORY")
@@ -20,12 +20,14 @@ public class Category implements Serializable {
     private Integer id;
     
     @Column(nullable = false, unique = true, length = 255)
-    @NotBlank(message = "Name can not be blank.")
-    @Size(min = 3, max = 255, message = "Name length min=3 and max=255")
     private String name;
     
     public Category(Integer id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public Category(String name) {
         this.name = name;
     }
     
@@ -45,6 +47,10 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CategoryResponse toDTO() {
+        return new CategoryResponse(id, name);
     }
 
     @Override

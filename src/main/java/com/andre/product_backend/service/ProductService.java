@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.andre.dto.ProductRequest;
+import com.andre.dto.ProductResponse;
 import com.andre.product_backend.models.Category;
 import com.andre.product_backend.models.Product;
 import com.andre.product_backend.repository.ProductRepository;
@@ -31,9 +33,9 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product save(Product product) {
-        Product productSaved = productRepository.save(product);
-        return productSaved;
+    public ProductResponse save(ProductRequest product) {
+        Product productSaved = productRepository.save(product.toEntity());
+        return productSaved.toDTO();
     }
 
     public void deleteById(long id) {

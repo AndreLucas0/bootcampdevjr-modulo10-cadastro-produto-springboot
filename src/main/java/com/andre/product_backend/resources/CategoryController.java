@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.andre.product_backend.models.Category;
+import com.andre.dto.CategoryRequest;
+import com.andre.dto.CategoryResponse;
 import com.andre.product_backend.service.CategoryService;
 
 @RestController
@@ -30,20 +31,20 @@ public class CategoryController {
     
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategory(@PathVariable int id) {
-        Category category = categoryService.getById(id);
+    public ResponseEntity<CategoryResponse> getCategory(@PathVariable int id) {
+        CategoryResponse category = categoryService.getDTOById(id);
         return ResponseEntity.ok(category);
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories() { 
+    public ResponseEntity<List<CategoryResponse>> getCategories() { 
         return ResponseEntity.ok(categoryService.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<Category> save(@Validated @RequestBody Category category) {
+    public ResponseEntity<CategoryResponse> save(@Validated @RequestBody CategoryRequest categoryRequest) {
         
-        category = categoryService.save(category);
+        CategoryResponse category = categoryService.save(categoryRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -62,7 +63,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCategory(@PathVariable int id, @RequestBody Category categoryUpdate) {
+    public ResponseEntity<Void> updateCategory(@PathVariable int id, @RequestBody CategoryRequest categoryUpdate) {
         categoryService.update(id, categoryUpdate);
         return ResponseEntity.ok().build();
     }

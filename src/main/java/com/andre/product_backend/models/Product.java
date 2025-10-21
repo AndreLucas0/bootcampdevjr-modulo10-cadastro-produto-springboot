@@ -2,6 +2,8 @@ package com.andre.product_backend.models;
 
 import java.io.Serializable;
 
+import com.andre.dto.ProductResponse;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,49 +11,45 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "TBL_PRODUCT")
 public class Product implements Serializable {
-    
-    //Atributos
+
+    // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Name can not be blank.")
-    @Size(min = 3, max = 255, message = "Name length min=3 and max=255")
     private String name;
 
     @Column(nullable = false, length = 1024)
-    @NotBlank(message = "Name can not be blank.")
-    @Size(min = 3, max = 1024, message = "Name length min=3 and max=1024")
     private String description;
 
     private boolean promotion;
 
     private boolean newProduct;
 
-    @Min(value = 0, message = "Price min value=0")
     private Double price;
 
     @ManyToOne
-    @Valid
     private Category category;
-    
-    
 
-    //Métodos construtores
-   
+    // Métodos construtores
 
-    public Product() {}
+    public Product() {
+    }
 
-
+    public Product(String name, String description, Category category, boolean promotion, boolean newProduct,
+            Double price) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.promotion = promotion;
+        this.newProduct = newProduct;
+        this.price = price;
+    }
 
     public Product(Long id, String name, String description, Category category, boolean promotion, boolean newProduct,
             Double price) {
@@ -64,88 +62,64 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-
-
     public Long getId() {
         return id;
     }
-
-
 
     public void setId(Long id) {
         this.id = id;
     }
 
-
-
     public String getName() {
         return name;
     }
-
-
 
     public void setName(String name) {
         this.name = name;
     }
 
-
-
     public String getDescription() {
         return description;
     }
-
-
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-
-
     public Category getCategory() {
         return category;
     }
-
-
 
     public void setCategory(Category category) {
         this.category = category;
     }
 
-
-
     public boolean isPromotion() {
         return promotion;
     }
-
-
 
     public void setPromotion(boolean promotion) {
         this.promotion = promotion;
     }
 
-
-
     public boolean isNewProduct() {
         return newProduct;
     }
-
-
 
     public void setNewProduct(boolean newProduct) {
         this.newProduct = newProduct;
     }
 
-
-
     public Double getPrice() {
         return price;
     }
 
-
-
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public ProductResponse toDTO() {
+        return new ProductResponse(this.id, this.name, this.description, this.promotion, this.newProduct, this.price, this.category);
     }
 
     @Override
