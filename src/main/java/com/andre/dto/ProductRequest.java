@@ -3,7 +3,6 @@ package com.andre.dto;
 import com.andre.product_backend.models.Category;
 import com.andre.product_backend.models.Product;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,59 +23,88 @@ public class ProductRequest {
     @Min(value = 0, message = "Price min value=0")
     private Double price;
 
-    @Valid
-    private Category category;
+    private IntegerDTO category;
+
+    public Product toEntity() {
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setNewProduct(newProduct);
+        product.setPromotion(promotion);
+        product.setPrice(price);
+        product.setCategory(new Category(category.getId()));
+
+        return product;
+    }
 
     public String getName() {
         return name;
     }
 
+
+
     public void setName(String name) {
         this.name = name;
     }
+
+
 
     public String getDescription() {
         return description;
     }
 
+
+
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 
     public boolean isPromotion() {
         return promotion;
     }
 
+
+
     public void setPromotion(boolean promotion) {
         this.promotion = promotion;
     }
+
+
 
     public boolean isNewProduct() {
         return newProduct;
     }
 
+
+
     public void setNewProduct(boolean newProduct) {
         this.newProduct = newProduct;
     }
+
+
 
     public Double getPrice() {
         return price;
     }
 
+
+
     public void setPrice(Double price) {
         this.price = price;
     }
 
-    public Category getCategory() {
+
+
+    public IntegerDTO getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
-    public Product toEntity() {
-        return new Product(this.name, this.description, this.category, this.promotion, this.newProduct, this.price);
+
+    public void setCategory(IntegerDTO category) {
+        this.category = category;
     }
 
 }

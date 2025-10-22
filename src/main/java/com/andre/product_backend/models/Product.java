@@ -41,16 +41,6 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String name, String description, Category category, boolean promotion, boolean newProduct,
-            Double price) {
-        this.name = name;
-        this.description = description;
-        this.category = category;
-        this.promotion = promotion;
-        this.newProduct = newProduct;
-        this.price = price;
-    }
-
     public Product(Long id, String name, String description, Category category, boolean promotion, boolean newProduct,
             Double price) {
         this.id = id;
@@ -119,7 +109,16 @@ public class Product implements Serializable {
     }
 
     public ProductResponse toDTO() {
-        return new ProductResponse(this.id, this.name, this.description, this.promotion, this.newProduct, this.price, this.category);
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(id);
+        productResponse.setName(name);
+        productResponse.setNewProduct(newProduct);
+        productResponse.setPromotion(promotion);
+        productResponse.setPrice(price);
+        productResponse.setCategory(category.toDTO());
+        productResponse.setDescription(description);
+
+        return productResponse;
     }
 
     @Override

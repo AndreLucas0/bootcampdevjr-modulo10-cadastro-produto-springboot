@@ -18,20 +18,25 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column(nullable = false, unique = true, length = 255)
     private String name;
-    
+
     public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    public Category(Integer id) {
+        this.id = id;
+    }
+
     public Category(String name) {
         this.name = name;
     }
-    
-    public Category() {}
+
+    public Category() {
+    }
 
     public Integer getId() {
         return id;
@@ -82,5 +87,5 @@ public class Category implements Serializable {
     public String toString() {
         return "Category [id=" + id + ", name=" + name + "]";
     }
-    
+
 }

@@ -1,27 +1,14 @@
 package com.andre.dto;
 
-import com.andre.product_backend.models.Category;
-
 public class ProductResponse {
 
-    private Long id;
+    private long id;
     private String name;
     private String description;
     private boolean promotion;
     private boolean newProduct;
-    private Double price;
-    private Category category;
-
-    public ProductResponse(Long id, String name, String description, boolean promotion, boolean newProduct,
-            Double price, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.promotion = promotion;
-        this.newProduct = newProduct;
-        this.price = price;
-        this.category = category;
-    }
+    private double price;
+    private CategoryResponse category;
 
     public ProductResponse() {
     }
@@ -58,28 +45,28 @@ public class ProductResponse {
         this.newProduct = newProduct;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public CategoryResponse getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryResponse category) {
+        this.category = category;
     }
 
     
