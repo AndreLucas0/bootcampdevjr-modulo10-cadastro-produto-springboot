@@ -15,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.andre.dto.ProductRequest;
 import com.andre.dto.ProductResponse;
-import com.andre.product_backend.models.Product;
 import com.andre.product_backend.service.ProductService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,15 +31,15 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable long id) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable long id) {
 
-        Product product = productService.getById(id);
+        ProductResponse product = productService.getDTOById(id);
 
         return ResponseEntity.ok(product);
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@Validated @RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> save(@Validated @RequestBody ProductRequest productRequest) {
         
         ProductResponse product = productService.save(productRequest);
 
@@ -54,7 +53,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<List<ProductResponse>> getProducts() {
         return ResponseEntity.ok(productService.getAll());
     }
 
@@ -65,7 +64,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProduct(@PathVariable long id, @RequestBody Product productUpdate) {
+    public ResponseEntity<Void> updateProduct(@PathVariable long id, @RequestBody ProductRequest productUpdate) {
         productService.update(id, productUpdate);
         return ResponseEntity.ok().build();
     }

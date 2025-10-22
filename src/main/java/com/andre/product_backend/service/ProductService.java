@@ -1,6 +1,7 @@
 package com.andre.product_backend.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,13 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
+    public ProductResponse getDTOById(long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
+        
+        return product.toDTO();
+    }
+    
     public Product getById(long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
@@ -29,8 +37,11 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAll() {
+        return productRepository.findAll()
+                                    .stream()
+                                    .map(c -> c.toDTO())
+                                    .collect(Collectors.toList());
     }
 
     public ProductResponse save(ProductRequest product) {
@@ -43,7 +54,7 @@ public class ProductService {
         productRepository.delete(product);
     }
 
-    public void update(long id, Product productUpdate) {
+    public void update(long id, ProductRequest productUpdate) {
         Product product = this.getById(id);
         
         if (productUpdate.getCategory() == null) {
