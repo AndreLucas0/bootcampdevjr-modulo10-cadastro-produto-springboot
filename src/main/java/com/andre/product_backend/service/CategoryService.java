@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +14,9 @@ import com.andre.dto.CategoryRequest;
 import com.andre.dto.CategoryResponse;
 import com.andre.product_backend.models.Category;
 import com.andre.product_backend.repository.CategoryRepository;
+import com.andre.product_backend.service.exceptions.DataBaseException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -44,8 +49,15 @@ public class CategoryService {
     }
 
     public void deleteById(int id) {
-        Category category = this.getById(id);
-        categoryRepository.delete(category);
+        try {
+            categoryRepository.deleteById(id);
+        }
+        catch(DataIntegrityViolationException e) {
+            throw new DataBaseException("Constraint violation, category can not delete");
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException("Category not found");
+        }
     }
 
     public void update(int id, CategoryRequest categoryUpdate) {

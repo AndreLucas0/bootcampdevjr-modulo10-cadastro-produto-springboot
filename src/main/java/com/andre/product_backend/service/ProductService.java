@@ -24,9 +24,7 @@ public class ProductService {
     private CategoryService categoryService;
 
     public ProductResponse getDTOById(long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
-        
+        Product product = this.getById(id);
         return product.toDTO();
     }
     

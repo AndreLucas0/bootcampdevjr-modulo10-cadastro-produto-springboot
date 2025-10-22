@@ -3,8 +3,10 @@ package com.andre.dto;
 import com.andre.product_backend.models.Category;
 import com.andre.product_backend.models.Product;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class ProductRequest {
@@ -21,8 +23,10 @@ public class ProductRequest {
     private boolean newProduct;
 
     @Min(value = 0, message = "Price min value=0")
-    private Double price;
+    private double price;
 
+    @NotNull
+    @Valid
     private IntegerDTO category;
 
     public Product toEntity() {
@@ -85,13 +89,13 @@ public class ProductRequest {
 
 
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
 
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
