@@ -23,16 +23,10 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public CategoryResponse getDTOById(int id) {
+    public CategoryResponse getById(int id) {
         Category category = categoryRepository.findById(id)
                                  .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found."));
         return category.toDTO();
-    }
-
-    public Category getById(int id) {
-        Category category = categoryRepository.findById(id)
-                                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found."));
-        return category;
     }
 
     public List<CategoryResponse> getAll() {
@@ -62,8 +56,12 @@ public class CategoryService {
     }
 
     public void update(int id, CategoryRequest categoryUpdate) {
-        Category category = this.getById(id);
-        category.setName(categoryUpdate.getName());
-        categoryRepository.save(category);
+        try {
+            Category category = categoryRepository.getReferenceById(id);
+            category.setName(categoryUpdate.getName());
+            categoryRepository.save(category);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Category not fond");
+        }
     }
 }
