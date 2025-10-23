@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -49,14 +48,16 @@ public class CategoryService {
     }
 
     public void deleteById(int id) {
+        
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException("Category not fond");
+        }
+
         try {
             categoryRepository.deleteById(id);
         }
         catch(DataIntegrityViolationException e) {
             throw new DataBaseException("Constraint violation, category can not delete");
-        }
-        catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException("Category not found");
         }
     }
 
