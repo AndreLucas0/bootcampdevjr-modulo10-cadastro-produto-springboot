@@ -5,10 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.andre.dto.ProductRequest;
 import com.andre.dto.ProductResponse;
 import com.andre.product_backend.models.Category;
@@ -25,7 +22,7 @@ public class ProductService {
     
     public ProductResponse getById(long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found."));
+                .orElseThrow(() -> new EntityNotFoundException("Product not found."));
         
         return product.toDTO();
     }
